@@ -212,6 +212,18 @@ formula instead of ERA5. This shouldn't affect cruise trajectories
 - Privacy/ethics: this dataset contains no personal data. Aircraft are
   operational platforms, not persons.
 
+### Station-location privacy
+
+Station coordinates in `stations.parquet` are **rounded to 2 decimal
+places of arc** (~1.1 km horizontal resolution at temperate latitudes).
+The producer's internal camera calibration retains full precision (it
+needs it to project sky positions into the image), but only the rounded
+coordinates reach the parquet — and `range_to_camera_km` in
+`trajectories.parquet` is computed from those same rounded coordinates
+so it doesn't carry sub-rounding precision either. This is to deter
+casual lookup of equipment locations; it isn't intended to defeat
+motivated geometric reverse-engineering.
+
 ## Known limitations
 
 - **Single-station, single-video** in v0.1. Cross-station generalisation

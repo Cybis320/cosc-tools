@@ -537,12 +537,12 @@ def build_video(staging_dir: Path, out_root: Path,
     video_id = f"{data['station_code']}_{data['prefix'].split('_', 1)[1]}"
     sc = data['station_code']
     sm = station_meta.get(sc, {})
-    # Use FULL-precision platepar coords for internal range calculations
-    # so range_to_camera_km isn't biased by the ~500 m rounding the
-    # published station coords get for privacy. Fall back to the
-    # published (rounded) coords if no platepar is available.
-    camera_lat = float(data.get('platepar_lat') or sm.get('lat', 0.0))
-    camera_lon = float(data.get('platepar_lon') or sm.get('lon', 0.0))
+    # Use the published (rounded) station coords for range so the
+    # parquet value is self-consistent with `stations.lat/lon` — a
+    # consumer can reproduce `range_to_camera_km` exactly from the
+    # published coords without needing the platepar.
+    camera_lat = float(sm.get('lat', 0.0))
+    camera_lon = float(sm.get('lon', 0.0))
     print(f"[build] video_id={video_id}")
 
     # Compute everything first, then assemble manifest
