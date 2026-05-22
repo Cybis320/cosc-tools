@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtualenv
+.venv/
+venv/
+env/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Built datasets — never commit data. The repo ships specs + producer code;
+# the dataset artifacts live elsewhere (Zenodo / Hugging Face).
+*.parquet
+cosc-v*/
+
+# Local temp / scratch
+/tmp/
+scratch/
+*.bak

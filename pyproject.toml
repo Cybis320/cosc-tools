@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cosc"
+version = "0.1.0.dev0"
+description = "Producer and spec for the COSC (Contrail Observations from Sky Cameras) research dataset."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Luc Busquin", email = "luc.busquin@contrailcast.com" },
+]
+keywords = ["contrails", "aviation", "atmospheric-science", "dataset", "remote-sensing"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: Other/Proprietary License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Atmospheric Science",
+]
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "pyarrow>=14.0",
+  "opencv-python>=4.8",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.4",
+]
+
+[project.scripts]
+cosc-build = "cosc.cli:main"
+
+[project.urls]
+"Repository" = "https://github.com/Cybis320/cosc-tools"
+"Documentation (Schema)" = "https://github.com/Cybis320/cosc-tools/blob/main/specs/SCHEMA.md"
+"Documentation (Dataset)" = "https://github.com/Cybis320/cosc-tools/blob/main/specs/DATASET_CARD.md"
+
+[tool.setuptools.packages.find]
+include = ["cosc*"]
+exclude = ["examples*", "tests*", "specs*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
