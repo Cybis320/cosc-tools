@@ -33,6 +33,15 @@ STATION_META = {
         'tz': 'Europe/Amsterdam',
         'comment': 'High-traffic Schiphol approach corridor; NATO MMF tanker loiter zone',
     },
+    'NL000Q': {
+        'country': 'NL',
+        'station_name': 'NL000Q',
+        'lat': 52.80,    # rounded from platepar lat=52.79544
+        'lon': 5.95,     # rounded from platepar lon=5.95459
+        'alt_m': 4.0,
+        'tz': 'Europe/Amsterdam',
+        'comment': 'Dutch farmland sky camera; Schiphol approach + MMF MRTT loiter corridor',
+    },
     # Add more as we expand.
 }
 

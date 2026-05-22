@@ -72,14 +72,22 @@ def _load_janus_output(staging_dir: Path) -> dict:
     gt_edit_count = 0
     if gt_path.exists():
         gt = json.loads(gt_path.read_text())
-        gt_status = gt.get('status', 'wip').lower()
-        if 'last_modified' in gt:
+        # The Janus editor writes `gt_status` (not `status`), `modified` (not
+        # `last_modified`), and stores edit metadata under `stats` / `edits[]`.
+        gt_status = str(gt.get('gt_status', 'wip')).lower()
+        modified = gt.get('modified') or gt.get('created')
+        if modified:
             try:
-                gt_last_edit_ts = pd.Timestamp(gt['last_modified'], tz='UTC')
+                gt_last_edit_ts = pd.Timestamp(modified)
+                if gt_last_edit_ts.tzinfo is None:
+                    gt_last_edit_ts = gt_last_edit_ts.tz_localize('UTC')
+                else:
+                    gt_last_edit_ts = gt_last_edit_ts.tz_convert('UTC')
             except Exception:
                 gt_last_edit_ts = None
-        gt_edit_count = int(gt.get('edit_count', 0))
-        print(f"[load] GT status={gt_status} edits={gt_edit_count}")
+        gt_edit_count = len(gt.get('edits', []))
+        print(f"[load] GT status={gt_status} edits={gt_edit_count} "
+              f"modified={gt_last_edit_ts}")
 
     # Platepar (for image dimensions + full-precision camera coords). Full
     # precision stays INTERNAL to the producer (used for range_to_camera

@@ -54,19 +54,32 @@ CC-BY-NC-4.0.
 
 ## Data hosting
 
-> ⚠️ **No public download URL yet.** v0.1 is being prepared; the schema and
-> producer in this repo are stable enough to discuss and audit, but the
-> built parquet artefacts aren't online yet.
->
-> When v0.1.0 is tagged, the dataset will be hosted at:
-> - **Bucket** (rolling, Hive-partitioned): TBD (likely an S3-compatible
->   public-read object store such as Cloudflare R2 or AWS S3).
-> - **Snapshot release** (immutable, DOI-citable): Zenodo and / or Hugging
->   Face Datasets, mirroring the bucket contents at the tagged version.
->
-> Until then, researchers interested in early access can build the dataset
-> locally from a Janus pipeline output directory (see the *Quickstart*
-> section of the [repo README](../README.md)), or contact the maintainer.
+### Preview release (one station, GT-verified)
+
+A **v0.1-preview** sample is attached to the GitHub release:
+<https://github.com/Cybis320/cosc-tools/releases/tag/v0.1-preview>
+
+- 1 video (~13 h, NL000Q station, 2025-10-01)
+- 553 advection-associated flights, 36,981 GT-verified detection events,
+  27,302 trajectory-point observations, 37,957 mask polygons
+- ~8 MB compressed tarball (~30 MB uncompressed across 6 parquets)
+
+This is the schema-validation drop: it lets researchers wire COSC into
+their tooling against real GT-verified data before the full v0.1.0 release.
+Schema is stable; coverage will grow.
+
+### Full v0.1.0 release (in preparation)
+
+The full v0.1.0 release will add more stations, a citable DOI, and a
+distribution venue beyond GitHub releases:
+- **Bucket** (rolling, Hive-partitioned): TBD (likely an S3-compatible
+  public-read object store such as Cloudflare R2 or AWS S3).
+- **Snapshot release** (immutable, DOI-citable): Zenodo and / or Hugging
+  Face Datasets, mirroring the bucket at the tagged version.
+
+Until then, researchers wanting more than the preview can build the
+dataset locally from a Janus pipeline output directory (see the
+*Quickstart* in the [repo README](../README.md)), or contact the maintainer.
 
 ### Operating scale
 
