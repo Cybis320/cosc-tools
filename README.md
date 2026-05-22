@@ -28,7 +28,8 @@ cosc-tools/
 │   ├── attribute.py            Projection-only trajectory-point attribution
 │   ├── build.py                Per-video producer
 │   └── cli.py                  `python -m cosc.cli build <staging_dir>`
-├── examples/                   Reader examples (TBD)
+├── examples/                   Reader examples
+│   └── load_v01.ipynb          Minimal load + per-emission-lifetime plot
 └── README.md                   (this file)
 ```
 
@@ -44,18 +45,32 @@ pip install -e .
 
 ### Read the dataset
 
+Download the [v0.1-preview release](https://github.com/Cybis320/cosc-tools/releases/tag/v0.1-preview)
+(NL000Q, GT-verified, ~8 MB):
+
+```bash
+wget https://github.com/Cybis320/cosc-tools/releases/download/v0.1-preview/cosc-v0.1-preview-NL000Q.tar.gz
+tar xzf cosc-v0.1-preview-NL000Q.tar.gz
+```
+
 ```python
 import pandas as pd
+base = "cosc-v0.1/country=NL/station=NL000Q/date=2025-10-01"
 
-# All detection events from one station/date
-events = pd.read_parquet(
-    "cosc-v0.1/country=NL/station=NL000C/date=2025-10-01/detection_events.parquet"
-)
+# Atomic per-frame attributions (the time-resolved evidence)
+events = pd.read_parquet(f"{base}/detection_events.parquet")
 
 # Aggregated per-trajectory-point observations (headline table for model comparison)
-obs = pd.read_parquet(
-    "cosc-v0.1/country=NL/station=NL000C/date=2025-10-01/trajectory_point_observations.parquet"
-)
+obs = pd.read_parquet(f"{base}/trajectory_point_observations.parquet")
+```
+
+See [`examples/load_v01.ipynb`](examples/load_v01.ipynb) for a runnable
+quickstart (loads the preview, summarises GT/censoring stats, plots
+per-emission-point observed contrail lifetime for one flight). Run with:
+
+```bash
+pip install -e '.[examples]'
+jupyter notebook examples/load_v01.ipynb
 ```
 
 See [`specs/SCHEMA.md`](specs/SCHEMA.md) for the full column-by-column contract.

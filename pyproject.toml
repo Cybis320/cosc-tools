@@ -36,6 +36,10 @@ dev = [
   "pytest>=8.0",
   "ruff>=0.4",
 ]
+examples = [
+  "matplotlib>=3.7",
+  "jupyter>=1.0",
+]
 
 [project.scripts]
 cosc-build = "cosc.cli:main"
