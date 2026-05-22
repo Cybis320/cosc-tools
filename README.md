@@ -25,6 +25,18 @@ correctly.*
 > (3 h is already supported by the trace generator) once the GT
 > review has been refreshed at the new horizon.
 
+### How the attribution works
+
+![How COSC attributes a YOLO mask back to discrete emission moments along a flight](docs/img/schematic_attribution.png)
+
+*Each row in `detection_events.parquet` answers the question: **which
+moment along which flight's track emitted the contrail this mask
+saw?** Wind has carried the contrails away from the aircraft's
+position by the time the camera detects them — so we need to project
+every ADS-B trajectory sample forward through ERA5 wind to where its
+contrail has drifted by the observation time. Mask polygons sit on
+that advected trace, NOT on the aircraft's actual ground track.*
+
 ![AAL168 GT-verified attribution overlay — CAWEC1 frame 5968](docs/img/attribution_overlay_aal168.png)
 
 *Inside one frame at CAWEC1 (Ontario): GT-verified mask polygons
