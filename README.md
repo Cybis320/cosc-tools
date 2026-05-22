@@ -35,6 +35,21 @@ masks (yellow rings). One row in `detection_events.parquet`
 corresponds to each (yellow ring, red polygon) pair at this frame;
 the dataset is built from millions of these.*
 
+## Built on the Global Meteor Network
+
+This dataset rides on the imaging infrastructure of the
+**[Global Meteor Network (GMN)](https://globalmeteornetwork.org/)**,
+the worldwide sky-camera network founded and led by
+**[Dr. Denis Vida](https://www.eng.uwo.ca/people/profiles/denis-vida.html)**
+at **Western University** (London, Ontario, Canada). The GMN's
+all-sky cameras and the **[RMS](https://github.com/CroatianMeteorNetwork/RMS)**
+software stack (camera capture, astrometric calibration, station
+metadata) are what make COSC possible — every station in this
+dataset is a GMN camera and every coordinate transform uses RMS
+calibration. **Please cite GMN and RMS in publications that use COSC**;
+see [`specs/DATASET_CARD.md`](specs/DATASET_CARD.md#acknowledgements)
+for references.
+
 ## Licenses
 
 - **Code** (this repository): [PolyForm Noncommercial 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0). Free for research, academic, personal, and other non-commercial use. Commercial use requires a separate written agreement.

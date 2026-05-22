@@ -283,10 +283,39 @@ Reruns are stable given identical pipeline output + GT.
 
 ## Acknowledgements
 
-ADS-B data: [Spire Aviation](https://spire.com/).
-Meteorological data: ECMWF ERA5 reanalysis.
-Contrail simulation: [pycontrails](https://github.com/contrailcirrus/pycontrails).
-Camera calibration: RMS / RPiMeteorStation lineage.
+COSC would not exist without the following projects and the people behind
+them. The imaging infrastructure, calibration software, and station
+network on top of which this dataset is built are entirely owed to:
+
+### Dr. Denis Vida, the Global Meteor Network, and Western University
+
+The **[Global Meteor Network (GMN)](https://globalmeteornetwork.org/)**,
+based at **Western University** (London, Ontario, Canada) and led by
+**Dr. Denis Vida**, operates a worldwide network of sky cameras (~1000
+stations and growing across dozens of countries). GMN's primary mission
+is meteor detection and orbit determination, but its all-sky cameras
+also passively observe contrails — which is what makes COSC possible.
+The **CAWEC1** station in this preview is one of these GMN cameras in
+western Ontario.
+
+The **[RMS (RPiMeteorStation)](https://github.com/CroatianMeteorNetwork/RMS)**
+software stack, also led by Dr. Vida, provides the camera-side capture,
+star-catalogue astrometric calibration (the "platepar" used to project
+sky positions to image pixels), and the canonical station-metadata
+format that every COSC station inherits. The COSC producer uses an RMS
+fork (`test-coordinate-transforms` branch) for its coordinate
+transformations.
+
+Please cite GMN and RMS in any publication that uses COSC:
+
+- Vida, D., et al. *The Global Meteor Network — Methodology and first results.* Monthly Notices of the Royal Astronomical Society 506.4 (2021): 5046-5074.
+- Vida, D., et al. *Open-source meteor detection software for low-cost single-board computers.* (RMS reference paper.)
+
+### Other inputs
+
+- **[Spire Aviation](https://spire.com/)** — ADS-B flight data, via the Contrails API.
+- **ECMWF ERA5** — meteorological reanalysis (wind, temperature, humidity).
+- **[pycontrails](https://github.com/contrailcirrus/pycontrails)** — advection physics + Schmidt-Appleman criterion implementations.
 
 ## Contact
 
