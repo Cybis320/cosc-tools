@@ -13,11 +13,16 @@ against detected-from-the-ground reality.
 27,302 emission points over a single 13 h sky-camera video, this is
 how long each contrail remained detectable. Right-censored points
 (grey) are ones where the contrail drifted out of FOV before
-dissipating — its true lifetime is at least the value shown.
-Censoring is per-row metadata in the dataset, so any survival-
-analysis-aware comparison handles it correctly. Pipeline output is
-capped at 30 min contrail age; the rightmost bin reflects the cap,
-not the natural maximum.*
+dissipating — its true lifetime is at least the value shown;
+censoring is per-row metadata in the dataset so any
+survival-analysis-aware comparison handles it correctly.*
+
+> ⚠️ **The 30 min cap is the Janus pipeline's `max_contrail_age`
+> default (0.5 h), not the natural maximum.** Natural contrail
+> lifetimes commonly run 1-4 h; the v0.1-preview dataset doesn't
+> see that tail. v0.2 will regenerate with a longer horizon
+> (3 h is already supported by the trace generator) once the GT
+> review has been refreshed at the new horizon.
 
 ![KLM1285 GT-verified attribution overlay — NL000Q frame 5437](docs/img/attribution_overlay_klm1285.png)
 

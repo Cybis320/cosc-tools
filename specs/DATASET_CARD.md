@@ -239,6 +239,15 @@ motivated geometric reverse-engineering.
 
 ## Known limitations
 
+- **Contrail age capped at the Janus pipeline's `max_contrail_age`**
+  (default 0.5 h ≈ 30 min). Attributions and `detect_last_age_s`
+  cannot exceed this cap. Natural contrail lifetimes commonly run
+  1-4 h, so v0.1 systematically underrepresents the upper tail.
+  Treat `detect_last_age_s ≥ max_age - frame_step_s` as a third class
+  of right-censoring (the dataset doesn't currently encode it as a
+  dedicated boolean; v0.2 will). The trace generator supports 3 h
+  horizons; the regeneration is gated on refreshing the GT review
+  at the new horizon.
 - **Single-station, single-video** in v0.1. Cross-station generalisation
   pending v0.2.
 - **YOLO detector** is the source of all `mask_polygons/`. Detector misses
