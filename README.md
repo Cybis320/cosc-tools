@@ -7,6 +7,27 @@ paired with per-trajectory-point empirical lifetimes. Built to let
 researchers benchmark contrail-evolution models (CoCiP, RFM, custom)
 against detected-from-the-ground reality.
 
+![Last observed contrail age vs emission time for MMF25 over NL000Q](docs/img/per_emission_lifetime_mmf25.png)
+
+*One flight's worth of headline data: for each emission point along
+MMF25's track (a NATO MMF tanker loitering over the Netherlands), how
+long the contrail remained detectable. Vertical bands are successive
+loiter passes; grey points are right-censored — the lifetime shown is
+only a lower bound because the contrail drifted out of FOV before it
+dissipated. Censoring is per-row metadata in the dataset, so any
+survival-analysis-aware comparison handles it correctly.*
+
+<table>
+<tr>
+<td width="50%"><img src="docs/img/attribution_overlay_TVS411P.png" alt="TVS411P attribution overlay" /></td>
+<td width="50%"><img src="docs/img/attribution_overlay_FR862.png" alt="FR862 attribution overlay — large wind error" /></td>
+</tr>
+<tr>
+<td><em>Inside one frame: the contrail mask (red), the flight's projected trajectory (cyan + rainbow dots = waypoints), and the trajectory points whose emission produced this mask (yellow rings). Every detection event in the dataset has these per-frame attributions backing it.</em></td>
+<td><em>The wind-error regime: same picture, but the modelled trajectory (cyan, below) is offset ~150 px from where the actual contrail (red, above) drifted. The dataset attributes correctly via along-track projection regardless of perpendicular offset.</em></td>
+</tr>
+</table>
+
 ## Licenses
 
 - **Code** (this repository): [PolyForm Noncommercial 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0). Free for research, academic, personal, and other non-commercial use. Commercial use requires a separate written agreement.
