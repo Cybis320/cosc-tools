@@ -28,12 +28,17 @@ correctly.*
 ![AAL168 GT-verified attribution overlay — CAWEC1 frame 5968](docs/img/attribution_overlay_aal168.png)
 
 *Inside one frame at CAWEC1 (Ontario): GT-verified mask polygons
-(red, n=30) on AAL168's contrail, the flight's modelled trajectory
-at that moment (cyan polyline + rainbow dots = discrete trajectory
-points), and the 15 trajectory points whose emission produced these
-masks (yellow rings). One row in `detection_events.parquet`
-corresponds to each (yellow ring, red polygon) pair at this frame;
-the dataset is built from millions of these.*
+(red, n=30) on AAL168's contrail, the **advected contrail trace** at
+that moment — cyan polyline + rainbow dots show where each emitted
+trajectory point's contrail has been drifted to by ERA5 wind by
+this observation time (so the rainbow dots are NOT where the
+aircraft was at emission; they're where its emissions are NOW).
+Yellow rings mark the 15 trajectory points whose advected positions
+fall on the mask polygons — i.e. the discrete emission moments
+along the flight whose contrails the detector is seeing in these
+red blobs. One row in `detection_events.parquet` corresponds to
+each (yellow ring, red polygon) pair at this frame; the dataset is
+built from millions of these.*
 
 ## Built on the Global Meteor Network
 
