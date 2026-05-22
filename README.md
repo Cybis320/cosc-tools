@@ -7,15 +7,17 @@ paired with per-trajectory-point empirical lifetimes. Built to let
 researchers benchmark contrail-evolution models (CoCiP, RFM, custom)
 against detected-from-the-ground reality.
 
-![Last observed contrail age vs emission time for MMF25 over NL000Q](docs/img/per_emission_lifetime_mmf25.png)
+![Distribution of observed contrail lifetimes — NL000Q, 2025-10-01](docs/img/lifetime_histogram_nl000q.png)
 
-*One flight's worth of headline data: for each emission point along
-MMF25's track (a NATO MMF tanker loitering over the Netherlands), how
-long the contrail remained detectable. Vertical bands are successive
-loiter passes; grey points are right-censored — the lifetime shown is
-only a lower bound because the contrail drifted out of FOV before it
-dissipated. Censoring is per-row metadata in the dataset, so any
-survival-analysis-aware comparison handles it correctly.*
+*The headline of the v0.1-preview release: across 553 flights and
+27,302 emission points over a single 13 h sky-camera video, this is
+how long each contrail remained detectable. Right-censored points
+(grey) are ones where the contrail drifted out of FOV before
+dissipating — its true lifetime is at least the value shown.
+Censoring is per-row metadata in the dataset, so any survival-
+analysis-aware comparison handles it correctly. Pipeline output is
+capped at 30 min contrail age; the rightmost bin reflects the cap,
+not the natural maximum.*
 
 <table>
 <tr>
