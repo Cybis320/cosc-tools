@@ -19,16 +19,15 @@ analysis-aware comparison handles it correctly. Pipeline output is
 capped at 30 min contrail age; the rightmost bin reflects the cap,
 not the natural maximum.*
 
-<table>
-<tr>
-<td width="50%"><img src="docs/img/attribution_overlay_TVS411P.png" alt="TVS411P attribution overlay" /></td>
-<td width="50%"><img src="docs/img/attribution_overlay_FR862.png" alt="FR862 attribution overlay — large wind error" /></td>
-</tr>
-<tr>
-<td><em>Inside one frame: the contrail mask (red), the flight's projected trajectory (cyan + rainbow dots = waypoints), and the trajectory points whose emission produced this mask (yellow rings). Every detection event in the dataset has these per-frame attributions backing it.</em></td>
-<td><em>The wind-error regime: same picture, but the modelled trajectory (cyan, below) is offset ~150 px from where the actual contrail (red, above) drifted. The dataset attributes correctly via along-track projection regardless of perpendicular offset.</em></td>
-</tr>
-</table>
+![KLM1285 GT-verified attribution overlay — NL000Q frame 5437](docs/img/attribution_overlay_klm1285.png)
+
+*Inside one frame: GT-verified mask polygons (red), the flight's
+modelled trajectory at that moment (cyan polyline + rainbow dots =
+discrete trajectory points), and the trajectory points whose
+emission produced these masks (yellow rings). One row in
+`detection_events.parquet` corresponds to each (yellow ring, red
+polygon) pair at this frame; the dataset is built from millions of
+these.*
 
 ## Licenses
 
