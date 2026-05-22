@@ -54,15 +54,16 @@ CC-BY-NC-4.0.
 
 ## Data hosting
 
-### Preview release (one station, GT-verified)
+### Preview release (two stations, GT-verified)
 
 A **v0.1-preview** sample is attached to the GitHub release:
 <https://github.com/Cybis320/cosc-tools/releases/tag/v0.1-preview>
 
-- 1 video (~13 h, NL000Q station, 2025-10-01)
-- 553 advection-associated flights, 36,981 GT-verified detection events,
-  27,302 trajectory-point observations, 37,957 mask polygons
-- ~8 MB compressed tarball (~30 MB uncompressed across 6 parquets)
+- 2 stations, 2 videos (~13 h each):
+  - **NL000Q** (Netherlands, 2025-10-01): 553 flights, 48,795 detection events, 32,693 trajectory-point observations
+  - **CAWEC1** (Ontario, Canada, 2025-11-18): 244 flights, 40,786 detection events, 14,794 trajectory-point observations
+- ~17 MB compressed tarball
+- **97-99 % of attributions are GT-verified** (per-row `source` flag); the residual `source = pipeline` rows reflect oids the human reviewer didn't touch on top of the pipeline baseline. NL000Q has `gt_status = complete` (8,350 human edits); CAWEC1 has `gt_status = wip` but is nearly complete (4,564 edits, 6,604 reviewed oids).
 
 This is the schema-validation drop: it lets researchers wire COSC into
 their tooling against real GT-verified data before the full v0.1.0 release.

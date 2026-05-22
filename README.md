@@ -7,15 +7,16 @@ paired with per-trajectory-point empirical lifetimes. Built to let
 researchers benchmark contrail-evolution models (CoCiP, RFM, custom)
 against detected-from-the-ground reality.
 
-![Distribution of observed contrail lifetimes — NL000Q, 2025-10-01](docs/img/lifetime_histogram_nl000q.png)
+![Contrail lifetime distributions — NL000Q + CAWEC1](docs/img/lifetime_histogram_v01.png)
 
-*The headline of the v0.1-preview release: across 553 flights and
-27,302 emission points over a single 13 h sky-camera video, this is
-how long each contrail remained detectable. Right-censored points
-(grey) are ones where the contrail drifted out of FOV before
-dissipating — its true lifetime is at least the value shown;
-censoring is per-row metadata in the dataset so any
-survival-analysis-aware comparison handles it correctly.*
+*The headline of the v0.1-preview release: two stations, two
+13 h videos, ~47k emission points combined, showing how long each
+contrail remained detectable. The two stations have visibly
+different censoring regimes — NL000Q (lots of high-altitude traffic
+slowly drifting through FOV) is censoring-dominated; CAWEC1 has
+much more in-view dissipation. Censoring is per-row metadata in
+the dataset so any survival-analysis-aware comparison handles it
+correctly.*
 
 > ⚠️ **The 30 min cap is the Janus pipeline's `max_contrail_age`
 > default (0.5 h), not the natural maximum.** Natural contrail
@@ -24,15 +25,15 @@ survival-analysis-aware comparison handles it correctly.*
 > (3 h is already supported by the trace generator) once the GT
 > review has been refreshed at the new horizon.
 
-![KLM1285 GT-verified attribution overlay — NL000Q frame 5437](docs/img/attribution_overlay_klm1285.png)
+![AAL168 GT-verified attribution overlay — CAWEC1 frame 5968](docs/img/attribution_overlay_aal168.png)
 
-*Inside one frame: GT-verified mask polygons (red), the flight's
-modelled trajectory at that moment (cyan polyline + rainbow dots =
-discrete trajectory points), and the trajectory points whose
-emission produced these masks (yellow rings). One row in
-`detection_events.parquet` corresponds to each (yellow ring, red
-polygon) pair at this frame; the dataset is built from millions of
-these.*
+*Inside one frame at CAWEC1 (Ontario): GT-verified mask polygons
+(red, n=30) on AAL168's contrail, the flight's modelled trajectory
+at that moment (cyan polyline + rainbow dots = discrete trajectory
+points), and the 15 trajectory points whose emission produced these
+masks (yellow rings). One row in `detection_events.parquet`
+corresponds to each (yellow ring, red polygon) pair at this frame;
+the dataset is built from millions of these.*
 
 ## Licenses
 

@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
 
+import cv2
 import numpy as np
 import pandas as pd
 import pyarrow as pa
@@ -70,11 +71,15 @@ def _load_janus_output(staging_dir: Path) -> dict:
     gt_status = 'none'
     gt_last_edit_ts = None
     gt_edit_count = 0
+    gt_oid_to_fid: dict = {}     # GT-edited assignments (effective_map)
+    gt_artifact_oids: set = set()  # oids GT-flagged as artifacts
     if gt_path.exists():
         gt = json.loads(gt_path.read_text())
         # The Janus editor writes `gt_status` (not `status`), `modified` (not
         # `last_modified`), and stores edit metadata under `stats` / `edits[]`.
         gt_status = str(gt.get('gt_status', 'wip')).lower()
+        if gt_status in ('null', 'none', ''):
+            gt_status = 'wip'  # Treat None/null/empty as wip for simplicity
         modified = gt.get('modified') or gt.get('created')
         if modified:
             try:
@@ -86,8 +91,27 @@ def _load_janus_output(staging_dir: Path) -> dict:
             except Exception:
                 gt_last_edit_ts = None
         gt_edit_count = len(gt.get('edits', []))
+        # `effective_map`: per-oid GT assignment (after human edits applied
+        # on top of the pipeline baseline). Values are list[fid] or
+        # ['artifact']. We honour it row-by-row so the `source` column on
+        # detection_events / observations reflects per-mask provenance,
+        # NOT a coarse file-level GT-status flag.
+        for oid_s, fids in gt.get('effective_map', {}).items():
+            if not fids:
+                continue
+            try:
+                oid_i = int(oid_s)
+            except ValueError:
+                continue
+            v = fids[0]
+            if v == 'artifact':
+                gt_artifact_oids.add(oid_i)
+            elif v:
+                gt_oid_to_fid[oid_i] = v
         print(f"[load] GT status={gt_status} edits={gt_edit_count} "
               f"modified={gt_last_edit_ts}")
+        print(f"[load] GT effective_map: {len(gt_oid_to_fid):,} reviewed oids, "
+              f"{len(gt_artifact_oids):,} artifacts")
 
     # Platepar (for image dimensions + full-precision camera coords). Full
     # precision stays INTERNAL to the producer (used for range_to_camera
@@ -111,6 +135,7 @@ def _load_janus_output(staging_dir: Path) -> dict:
     return {
         'staging_dir': staging_dir, 'station_code': station_code, 'prefix': prefix,
         'polygons_list': polygons_list, 'oid_index': oid_index,
+        'gt_oid_to_fid': gt_oid_to_fid, 'gt_artifact_oids': gt_artifact_oids,
         'frametimes': frametimes, 'adsb': adsb,
         'flight_interp': flight_interp, 'dry_adv': dry_adv,
         'assoc_csv': assoc_csv, 'gt': gt, 'gt_status': gt_status,
@@ -310,37 +335,56 @@ def build_detection_events_and_observations(data: dict, video_id: str):
     Returns (events_df, obs_df).
     """
     polygons_list = data['polygons_list']
-    oid_index = data['oid_index']
+    oid_index = data['oid_index']                  # pipeline oid → fid
+    gt_oid_to_fid = data['gt_oid_to_fid']           # GT-reviewed oid → fid
+    gt_artifact_oids = data['gt_artifact_oids']    # GT-flagged artifacts (skip)
     dry_adv = data['dry_adv']
     if dry_adv.index.name == 'timestamp':
         dry_adv = dry_adv.reset_index()
     flight_index = dry_adv.set_index('flight_id').sort_index()
 
-    # Group polygons by winning flight for fast iteration; produce per-mask records.
+    # Per-oid source resolution:
+    #   - oid in GT effective_map → use GT assignment, source='gt'
+    #   - oid in GT artifact set → skip (not a real contrail per GT)
+    #   - oid only in pipeline index → use pipeline assignment, source='pipeline'
+    #   - oid in neither → not associated, skip entirely
     per_flight: Dict[str, List[dict]] = {}
     poly_centroid_area = {}  # oid -> (cx, cy, area)
+    n_gt_events = n_pipeline_events = n_skipped_artifact = 0
     for entry in polygons_list:
         frame = int(entry['f'])
         ts = pd.Timestamp(int(entry['t']), unit='s', tz='UTC')
         obj_in_frame = int(entry.get('i', 0))
         for poly_idx, poly_pts in enumerate(entry['p']):
             oid = _decode_oid(frame, obj_in_frame, poly_idx)
-            fids = oid_index.get(oid)
-            if not fids:
+            if oid in gt_artifact_oids:
+                n_skipped_artifact += 1
                 continue
-            fid = fids[0]
+            if oid in gt_oid_to_fid:
+                fid = gt_oid_to_fid[oid]
+                src = 'gt'
+                n_gt_events += 1
+            else:
+                fids = oid_index.get(oid)
+                if not fids:
+                    continue
+                fid = fids[0]
+                src = 'pipeline'
+                n_pipeline_events += 1
             poly_arr = np.asarray(poly_pts, dtype=np.float32).reshape(-1, 1, 2)
             per_flight.setdefault(fid, []).append({
                 'oid': oid, 'frame': frame, 'timestamp': ts,
                 'polygon': poly_arr, 'yolo_confidence': float(entry.get('c', 0.0)),
+                'source': src,
             })
             # Centroid + area for the events table
             pts = np.asarray(poly_pts, dtype=np.float32)
-            import cv2
             area = abs(cv2.contourArea(pts))
             cx = float(pts[:, 0].mean()) if len(pts) else None
             cy = float(pts[:, 1].mean()) if len(pts) else None
             poly_centroid_area[oid] = (cx, cy, int(area))
+    print(f"[attribute] oid resolution: gt={n_gt_events:,}  "
+          f"pipeline={n_pipeline_events:,}  skipped_artifact={n_skipped_artifact:,}")
 
     win = pd.Timedelta(seconds=15)
     event_rows: List[dict] = []
@@ -389,7 +433,7 @@ def build_detection_events_and_observations(data: dict, video_id: str):
                     'pipeline_dist_to_polyline_m': None,
                     'pipeline_mask_thresh_m': None,
                     'pipeline_angle_deg': None,
-                    'source': 'gt' if data['gt_status'] == 'complete' else 'pipeline',
+                    'source': entry['source'],   # per-mask, not file-level
                 })
         if fi % 25 == 0:
             print(f"[attribute]   {fi}/{len(per_flight)} flights done "
@@ -484,7 +528,13 @@ def build_detection_events_and_observations(data: dict, video_id: str):
     )
 
     obs['video_id'] = video_id
-    obs['source'] = events_df['source'].iloc[0] if not events_df.empty else 'pipeline'
+    # Per-row source: 'gt' only if EVERY contributing event was GT-verified.
+    src_per_obs = (events_df.groupby(['flight_id', 'emit_ts_utc'])['source']
+                   .agg(lambda s: 'gt' if (s == 'gt').all() else 'pipeline')
+                   .reset_index().rename(columns={'source': '_src'}))
+    obs = obs.merge(src_per_obs, on=['flight_id', 'emit_ts_utc'], how='left')
+    obs['source'] = obs['_src'].fillna('pipeline')
+    obs = obs.drop(columns=['_src'])
     obs['pipeline_confidence_score'] = obs['flight_id'].map(fid_conf).astype('float32')
     obs['wind_correction_w_perp_ms'] = obs['flight_id'].map(fid_wperp).astype('float32')
 

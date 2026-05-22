@@ -42,6 +42,15 @@ STATION_META = {
         'tz': 'Europe/Amsterdam',
         'comment': 'Dutch farmland sky camera; Schiphol approach + MMF MRTT loiter corridor',
     },
+    'CAWEC1': {
+        'country': 'CA',
+        'station_name': 'CAWEC1',
+        'lat': 43.19,    # rounded from platepar lat=43.192831
+        'lon': -81.32,   # rounded from platepar lon=-81.315708
+        'alt_m': 330.5,
+        'tz': 'America/Toronto',
+        'comment': 'Western Ontario sky camera; mixed North American carrier cruise traffic',
+    },
     # Add more as we expand.
 }
 
