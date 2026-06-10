@@ -26,7 +26,7 @@ cosc-v0.1/
 │   └── country=NL/station=NL000C/date=2025-10-01/polygons.parquet
 ├── DATASET_CARD.md
 ├── SCHEMA.md                         (this file)
-├── LICENSE                           (CC-BY-NC-4.0; commercial use requires separate agreement)
+├── LICENSE                           (CC-BY-4.0)
 └── manifest.json                     (top-level metadata: version, pipeline_commit, build_ts, row counts per table)
 ```
 

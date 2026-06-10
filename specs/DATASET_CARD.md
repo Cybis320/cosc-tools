@@ -15,7 +15,7 @@ honest.
 - **Scope (v0.1)**: 1 station (NL000C, Netherlands), 1 video (2025-10-01,
   13 h), 123 associated flights, ~14k mask polygons, ~37k attribution events.
 - **Format**: Apache Parquet, partitioned `country=*/station=*/date=*`.
-- **License**: CC-BY-NC-4.0 (research / non-commercial use). Commercial use requires a separate written agreement — see the **License** section below.
+- **License**: CC-BY-4.0 — free for any use, including commercial, with attribution. See the **License** section below.
 
 ## Citation
 
@@ -26,22 +26,17 @@ Busquin, L. (2026). COSC v0.1: Contrail Observations from Sky Cameras.
 
 ## License
 
-Released under [Creative Commons Attribution-NonCommercial 4.0 International (CC-BY-NC-4.0)](https://creativecommons.org/licenses/by-nc/4.0/) for research and non-commercial use.
+Released under [Creative Commons Attribution 4.0 International (CC-BY-4.0)](https://creativecommons.org/licenses/by/4.0/).
 
 **You may**, with attribution:
-- Use the data in academic research, theses, and publications.
-- Share and adapt the dataset for non-commercial purposes.
-- Combine with other CC-BY-NC-compatible datasets.
-- Cite results in conference / journal papers, including industry-affiliated authors, provided the work is not primarily directed toward commercial advantage.
+- Use the data for any purpose, including commercial use.
+- Share and adapt the dataset.
+- Combine with other CC-BY-compatible datasets.
+- Train and evaluate models against it, and publish or deploy the results.
 
-**You may not**, without a separate written agreement with the dataset maintainer:
-- Sell the dataset or any substantial derivative of it.
-- Build a commercial product, paid service, or revenue-generating tool that depends on the dataset (or on a model trained against it).
-- Use the dataset in support of a commercial flight-operations / fuel-optimisation / contrail-avoidance decision system intended for paid deployment.
+The only condition is **attribution** — credit the dataset as described below.
 
-Contact for commercial-use agreements: **Luc Busquin** &lt;[luc.busquin@contrailcast.com](mailto:luc.busquin@contrailcast.com)&gt;.
-
-Full license text: `LICENSE` (CC-BY-NC-4.0 verbatim).
+Full license text: `LICENSE` in the dataset distribution (CC-BY-4.0 verbatim).
 
 ### Attribution
 
@@ -49,7 +44,7 @@ When citing the dataset in a paper or derivative work, include:
 
 ```
 COSC v0.1 (Contrail Observations from Sky Cameras). [DOI TBD]. [Year].
-CC-BY-NC-4.0.
+CC-BY-4.0.
 ```
 
 ## Data hosting

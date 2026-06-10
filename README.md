@@ -69,9 +69,8 @@ for references.
 
 ## Licenses
 
-- **Code** (this repository): [PolyForm Noncommercial 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0). Free for research, academic, personal, and other non-commercial use. Commercial use requires a separate written agreement.
-- **Dataset** (the published parquet release): [CC-BY-NC-4.0](https://creativecommons.org/licenses/by-nc/4.0/). Same scheme, with attribution.
-- **Commercial use of either**: contact the maintainer.
+- **Code** (this repository): [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0). Free for any use, commercial included, with attribution and patent grant.
+- **Dataset** (the published parquet release): [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/). Free for any use, with attribution.
 
 See [`LICENSE`](LICENSE) for the code license verbatim and
 [`specs/DATASET_CARD.md`](specs/DATASET_CARD.md) for the dataset terms.
@@ -165,5 +164,5 @@ to the empirical detection density curve.
 
 ## Contact
 
-For commercial use of either the code or the dataset, dataset issues, or
-schema discussions: **Luc Busquin** &lt;[luc.busquin@contrailcast.com](mailto:luc.busquin@contrailcast.com)&gt;.
+For dataset issues or schema discussions: **Luc Busquin**
+&lt;[luc.busquin@contrailcast.com](mailto:luc.busquin@contrailcast.com)&gt;.
